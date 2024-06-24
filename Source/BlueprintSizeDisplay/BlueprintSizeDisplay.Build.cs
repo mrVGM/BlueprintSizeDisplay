@@ -42,7 +42,10 @@ public class BlueprintSizeDisplay : ModuleRules
 				"AssetRegistry",
 				"TreeMap",
 				"ToolMenus",
-				"Kismet"
+				"Kismet",
+				"UnrealEd",
+                "BlueprintEditorLibrary",
+				"Blutility"
 				// ... add private dependencies that you statically link with here ...	
 			}
 			);

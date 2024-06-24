@@ -2,11 +2,38 @@
 
 #include "BlueprintSizeDisplay.h"
 
+#include "AssetRegistry/IAssetRegistry.h"
+#include "Subsystems/EditorAssetSubsystem.h"
+#include "BlueprintEditorLibrary.h"
+#include "EditorUtilityObject.h"
+
 #define LOCTEXT_NAMESPACE "FBlueprintSizeDisplayModule"
 
 void FBlueprintSizeDisplayModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	IAssetRegistry* assetRegistry = IAssetRegistry::Get();
+
+	auto run = [assetRegistry]() {
+		TArray<FAssetData> outAssetData;
+		assetRegistry->GetAssetsByPackageName("/BlueprintSizeDisplay/EUB_BPSizeDisplay", outAssetData);
+
+		FAssetData& assetData = outAssetData[0];
+		UObject* asset = assetData.GetAsset();
+
+		UBlueprint* bp = UBlueprintEditorLibrary::GetBlueprintAsset(asset);
+		UClass* bpClass = UBlueprintEditorLibrary::GeneratedClass(bp);
+
+		UEditorUtilityObject* eub = NewObject<UEditorUtilityObject>(GetTransientPackage(), bpClass);
+		eub->Run();
+	};
+
+	bool isLoading = assetRegistry->IsLoadingAssets();
+	if (!isLoading) {
+		run();
+		return;
+	}
+
+	assetRegistry->OnFilesLoaded().AddLambda(run);
 }
 
 void FBlueprintSizeDisplayModule::ShutdownModule()
