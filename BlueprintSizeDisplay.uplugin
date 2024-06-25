@@ -1,6 +1,7 @@
 {
 	"FileVersion": 3,
 	"Version": 1,
+	"EngineVersion": "5.2.0",
 	"VersionName": "1.0",
 	"FriendlyName": "BlueprintSizeDisplay",
 	"Description": "",

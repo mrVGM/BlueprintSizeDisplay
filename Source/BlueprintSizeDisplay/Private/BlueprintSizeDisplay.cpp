@@ -15,7 +15,13 @@ void FBlueprintSizeDisplayModule::StartupModule()
 
 	auto run = [assetRegistry]() {
 		TArray<FAssetData> outAssetData;
-		assetRegistry->GetAssetsByPackageName("/BlueprintSizeDisplay/EUB_BPSizeDisplay", outAssetData);
+		bool res = assetRegistry->GetAssetsByPackageName("/BlueprintSizeDisplay/EUB_BPSizeDisplay", outAssetData);
+
+		if (!res || outAssetData.IsEmpty())
+		{
+			UE_LOG(LogTemp, Error, TEXT("Failed to load the Blueprint Size Display plugin!"));
+			return;
+		}
 
 		FAssetData& assetData = outAssetData[0];
 		UObject* asset = assetData.GetAsset();
