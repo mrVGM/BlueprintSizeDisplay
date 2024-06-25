@@ -19,7 +19,7 @@ void FBlueprintSizeDisplayModule::StartupModule()
 
 		if (!res || outAssetData.IsEmpty())
 		{
-			UE_LOG(LogTemp, Error, TEXT("Failed to load the Blueprint Size Display plugin!"));
+			UE_LOG(LogTemp, Warning, TEXT("Failed to load the Blueprint Size Display plugin!"));
 			return;
 		}
 
