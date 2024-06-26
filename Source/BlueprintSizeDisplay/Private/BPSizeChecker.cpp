@@ -529,10 +529,9 @@ void UBPSizeChecker::FormatAssetSize(const FAssetSizeData& SizeData, FString& Ou
 	if (SizeData.Size != SizeData.InitialSize)
 	{
 		int64 sizeDiff = SizeData.Size - SizeData.InitialSize;
-		int sign = sizeDiff >= 0 ? 1 : -1;
 		
 		FString tmp = MakeBestSizeString(abs(sizeDiff), true);
-		OutDisplayString += FString::Format(TEXT(" ({0}{1})"), {sign ? TEXT("+") : TEXT("-"), tmp});
+		OutDisplayString += FString::Format(TEXT(" ({0}{1})"), {sizeDiff >= 0 ? TEXT("+") : TEXT("-"), tmp});
 	}
 }
 
