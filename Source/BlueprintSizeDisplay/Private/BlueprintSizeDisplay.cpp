@@ -13,7 +13,13 @@ void FBlueprintSizeDisplayModule::StartupModule()
 {
 	IAssetRegistry* assetRegistry = IAssetRegistry::Get();
 
+	static FDelegateHandle runHandle; 
 	auto run = [assetRegistry]() {
+		if (runHandle.IsValid())
+		{
+			assetRegistry->OnFilesLoaded().Remove(runHandle);
+		}
+		
 		TArray<FAssetData> outAssetData;
 		bool res = assetRegistry->GetAssetsByPackageName("/BlueprintSizeDisplay/EUB_BPSizeDisplay", outAssetData);
 
@@ -39,7 +45,7 @@ void FBlueprintSizeDisplayModule::StartupModule()
 		return;
 	}
 
-	assetRegistry->OnFilesLoaded().AddLambda(run);
+	runHandle = assetRegistry->OnFilesLoaded().AddLambda(run);
 }
 
 void FBlueprintSizeDisplayModule::ShutdownModule()
